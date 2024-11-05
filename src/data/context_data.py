@@ -37,6 +37,20 @@ def split_location(x: str) -> list:
 	return res
 
 
+def categorize_age(age: int) -> str:
+	"""
+	Categorize age into age range
+	:param age: (int)
+	:return: (str) age range
+	"""
+	if 0 < age < 12:
+		return 'child'
+	elif age < 20:
+		return 'teenager'
+	else:
+		return 'adult'
+
+
 def process_context_data(users, books):
 	"""
 	Parameters
@@ -72,7 +86,8 @@ def process_context_data(users, books):
 		lambda x: x // 10 * 10)  # 1990년대, 2000년대, 2010년대, ...
 
 	users_['age'] = users_['age'].fillna(users_['age'].mode()[0])
-	users_['age_range'] = users_['age'].apply(lambda x: x // 10 * 10)  # 10대, 20대, 30대, ...
+	print('age categorized')
+	users_['age_range'] = users_['age'].apply(lambda x: categorize_age(x))
 
 	users_['location_list'] = users_['location'].apply(lambda x: split_location(x))
 	users_['location_country'] = users_['location_list'].apply(lambda x: x[0])
