@@ -1,8 +1,12 @@
 .idea
 *.csv
-/saved/log/*
+/saved/*
 !/saved/log/.gitkeep
 /data/*
+<<<<<<< HEAD
 /wandb/*
 /saved/checkpoint
 __pycache__
+=======
+/wandb/*
+>>>>>>> Chore : Update .gitignore
