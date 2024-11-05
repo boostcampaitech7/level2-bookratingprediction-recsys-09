@@ -1,0 +1,4 @@
+.idea
+*.csv
+/saved/log/*
+!/saved/log/.gitkeep
