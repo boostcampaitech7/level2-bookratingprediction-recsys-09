@@ -4,3 +4,5 @@
 !/saved/log/.gitkeep
 /data/*
 /wandb/*
+/saved/checkpoint
+__pycache__
