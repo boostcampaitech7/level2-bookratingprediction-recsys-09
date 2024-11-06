@@ -37,7 +37,21 @@ def split_location(x: str) -> list:
 	return res
 
 
-def process_context_data(users, books):
+def get_top_users_by_rating_count(ratings: pd.DataFrame, quantile: float = 0.8) -> pd.Index:
+	"""
+	Get top 20% users by rating count
+	:param ratings: (pd.DataFrame) rating data
+	:param quantile: (float) quantile to get top users
+	:return: (pd.Index) top users
+	"""
+	user_rating_counts = ratings['user_id'].value_counts()
+	threshold_count = user_rating_counts.quantile(quantile)
+	top_users = user_rating_counts[user_rating_counts >= threshold_count].index
+
+	return top_users
+
+
+def process_context_data(users, books, ratings):
 	"""
 	Parameters
 	----------
@@ -99,7 +113,9 @@ def process_context_data(users, books):
 
 	users_ = users_.drop(['location'], axis=1)
 
-	return users_, books_
+	top_users = get_top_users_by_rating_count(ratings)
+
+	return users_, books_, top_users
 
 
 def context_data_load(args):
@@ -122,7 +138,10 @@ def context_data_load(args):
 	test = pd.read_csv(args.dataset.data_path + 'test_ratings.csv')
 	sub = pd.read_csv(args.dataset.data_path + 'sample_submission.csv')
 
-	users_, books_ = process_context_data(users, books)
+	users_, books_, top_users = process_context_data(users, books, train)
+
+	top_train = train[train['user_id'].isin(top_users)]
+	train_df = pd.concat([train, top_train], axis=0)
 
 	# 유저 및 책 정보를 합쳐서 데이터 프레임 생성
 	# 사용할 컬럼을 user_features와 book_features에 정의합니다. (단, 모두 범주형 데이터로 가정)
