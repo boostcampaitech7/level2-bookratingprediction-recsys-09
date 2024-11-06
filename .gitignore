@@ -1,0 +1,8 @@
+.idea
+*.csv
+/saved/log/*
+!/saved/log/.gitkeep
+/data/*
+/wandb/*
+/saved/checkpoint
+__pycache__
